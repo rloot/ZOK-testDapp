@@ -7,21 +7,20 @@ import {
   PrivateKey,
   AccountUpdate,
 } from 'snarkyjs';
-import { checkIfZero } from './SquareStruct.js';
+import { SquareStruct } from './SquareStruct.js';
 
 await isReady;
 
 console.log('SnarkyJS loaded');
 
-const isZero = await checkIfZero(Field(1));
-console.log(isZero);
-//
 const useProof = false;
 
 const Local = Mina.LocalBlockchain({ proofsEnabled: useProof });
 Mina.setActiveInstance(Local);
-const { privateKey: deployerKey, publicKey: deployerAccount } = Local.testAccounts[0];
-const { privateKey: senderKey, publicKey: senderAccount } = Local.testAccounts[1];
+const { privateKey: deployerKey, publicKey: deployerAccount } =
+  Local.testAccounts[0];
+const { privateKey: senderKey, publicKey: senderAccount } =
+  Local.testAccounts[1];
 
 // ----------------------------------------------------
 
@@ -39,24 +38,24 @@ await deployTxn.sign([deployerKey, zkAppPrivateKey]).send();
 
 // get the initial state of Square after deployment
 const num0 = zkAppInstance.num.get();
-console.log('state after init:', num0.toString());
+console.log('state after init:', num0.num.toString());
 
 // ----------------------------------------------------
 
 const txn1 = await Mina.transaction(senderAccount, () => {
-  zkAppInstance.update(Field(9));
+  zkAppInstance.updateNum(Field(9));
 });
 await txn1.prove();
 await txn1.sign([senderKey]).send();
 
 const num1 = zkAppInstance.num.get();
-console.log('state after txn1:', num1.toString());
+console.log('state after txn1:', num1.num.toString());
 
 // ----------------------------------------------------
 
 try {
   const txn2 = await Mina.transaction(senderAccount, () => {
-    zkAppInstance.update(Field(75));
+    zkAppInstance.updateNum(Field(75));
   });
   await txn1.prove();
   await txn2.sign([senderKey]).send();
@@ -64,21 +63,31 @@ try {
   console.log(ex.message);
 }
 const num2 = zkAppInstance.num.get();
-console.log('state after txn2:', num2.toString());
+console.log('state after txn2:', num2.num.toString());
 
 // ----------------------------------------------------
 
 const txn3 = await Mina.transaction(senderAccount, () => {
-  zkAppInstance.update(Field(81));
+  zkAppInstance.updateNum(Field(81));
 });
 await txn3.prove();
 await txn3.sign([senderKey]).send();
 
 const num3 = zkAppInstance.num.get();
-console.log('state after txn3:', num3.toString());
+console.log('state after txn3:', num3.num.toString());
 
 // ----------------------------------------------------
 
+const txn4 = await Mina.transaction(senderAccount, () => {
+  zkAppInstance.updateSquare(new SquareStruct(Field(6561)));
+});
+await txn4.prove();
+await txn4.sign([senderKey]).send();
+
+const num4 = zkAppInstance.num.get();
+console.log('state after txn1:', num4.num.toString());
+
+//
 console.log('Shutting down');
 
 await shutdown();
