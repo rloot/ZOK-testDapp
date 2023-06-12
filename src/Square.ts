@@ -1,5 +1,5 @@
 import { Field, SmartContract, state, State, method } from 'snarkyjs';
-import { SquareStruct } from './SquareStruct.js';
+import { SquareStruct } from './Cases.js';
 
 export class Square extends SmartContract {
   @state(SquareStruct) num = State<SquareStruct>();

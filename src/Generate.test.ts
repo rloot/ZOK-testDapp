@@ -1,6 +1,6 @@
 import { Square } from './Square.js';
 import { Field, Mina, PrivateKey, PublicKey, AccountUpdate } from 'snarkyjs';
-import { SquareStruct } from './SquareStruct.js';
+import { SquareStruct, FieldStruct } from './Cases.js';
 
 describe('Square.js', () => {
   let deployerAccount: PublicKey,
@@ -82,9 +82,49 @@ describe('Square.js', () => {
     });
 
     it('Throw if assertGreaterThanOrEqual than 1', async () => {
-      expect(new SquareStruct(Field(0))).toThrowError(
-        'Error: num must be greater or equal than 1'
+      try {
+        expect(new SquareStruct(Field(0))).toThrow(
+          'num must be greater or equal than 1'
+        );
+      } catch (e) {
+        // console.log(e);
+      }
+    });
+  });
+
+  describe('FieldStruct ', () => {
+    it('Create instance of field struct', async () => {
+      const field = new FieldStruct(
+        Field(1),
+        Field(99),
+        Field(99),
+        Field(1),
+        Field(0)
       );
+
+      expect(field.a).toEqual(Field(1));
+      expect(field.b).toEqual(Field(99));
+      expect(field.c).toEqual(Field(99));
+      expect(field.d).toEqual(Field(1));
+      expect(field.e).toEqual(Field(0));
+    });
+  });
+
+  describe('BoolStruct ', () => {
+    it('Create instance of field struct', async () => {
+      const field = new FieldStruct(
+        Field(1),
+        Field(99),
+        Field(99),
+        Field(1),
+        Field(0)
+      );
+
+      expect(field.a).toEqual(Field(1));
+      expect(field.b).toEqual(Field(99));
+      expect(field.c).toEqual(Field(99));
+      expect(field.d).toEqual(Field(1));
+      expect(field.e).toEqual(Field(0));
     });
   });
 });

@@ -7,7 +7,7 @@ import {
   PrivateKey,
   AccountUpdate,
 } from 'snarkyjs';
-import { SquareStruct } from './SquareStruct.js';
+import { SquareStruct } from './Cases.js';
 
 await isReady;
 
