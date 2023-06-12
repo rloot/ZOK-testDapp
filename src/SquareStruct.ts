@@ -9,10 +9,6 @@ export class SquareStruct extends Struct({
   public check() {
     this.num.assertGreaterThanOrEqual(1, 'num must be greater or equal than 1');
   }
-  // _assert(expr: unknown, msg?: string) {
-  //   if (!expr)
-  //     throw new Error(msg);
-  // }
 }
 
 export class Vaccine extends Struct({

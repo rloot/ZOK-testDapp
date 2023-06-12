@@ -1,13 +1,5 @@
 import { Square } from './Square.js';
-import {
-  isReady,
-  shutdown,
-  Field,
-  Mina,
-  PrivateKey,
-  PublicKey,
-  AccountUpdate,
-} from 'snarkyjs';
+import { Field, Mina, PrivateKey, PublicKey, AccountUpdate } from 'snarkyjs';
 import { SquareStruct } from './SquareStruct.js';
 
 describe('Square.js', () => {
@@ -87,6 +79,12 @@ describe('Square.js', () => {
       const square = zkAppInstance.num.get();
       console.log(square.num.toString());
       expect(square.num).toEqual(Field(6561));
+    });
+
+    it('Throw if assertGreaterThanOrEqual than 1', async () => {
+      expect(new SquareStruct(Field(0))).toThrowError(
+        'Error: num must be greater or equal than 1'
+      );
     });
   });
 });
