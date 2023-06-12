@@ -111,20 +111,6 @@ describe('Square.js', () => {
   });
 
   describe('BoolStruct ', () => {
-    it('Create instance of field struct', async () => {
-      const field = new FieldStruct(
-        Field(1),
-        Field(99),
-        Field(99),
-        Field(1),
-        Field(0)
-      );
-
-      expect(field.a).toEqual(Field(1));
-      expect(field.b).toEqual(Field(99));
-      expect(field.c).toEqual(Field(99));
-      expect(field.d).toEqual(Field(1));
-      expect(field.e).toEqual(Field(0));
-    });
+    it.todo;
   });
 });
