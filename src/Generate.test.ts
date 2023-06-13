@@ -1,6 +1,13 @@
 import { Square } from './Square.js';
-import { Field, Mina, PrivateKey, PublicKey, AccountUpdate } from 'snarkyjs';
-import { SquareStruct, FieldStruct } from './Cases.js';
+import {
+  Field,
+  Mina,
+  PrivateKey,
+  PublicKey,
+  AccountUpdate,
+  Bool,
+} from 'snarkyjs';
+import { SquareStruct, FieldStruct, BoolStruct } from './Cases.js';
 
 describe('Square.js', () => {
   let deployerAccount: PublicKey,
@@ -111,6 +118,10 @@ describe('Square.js', () => {
   });
 
   describe('BoolStruct ', () => {
-    it.todo;
+    it('Parses type on initiation', () => {
+      const boolStruct = new BoolStruct(Bool(true));
+      expect(boolStruct).toHaveProperty('boolean1');
+      expect(new BoolStruct(Field(1))).toThrowError();
+    });
   });
 });

@@ -59,8 +59,8 @@ try {
   });
   await txn1.prove();
   await txn2.sign([senderKey]).send();
-} catch (ex: any) {
-  console.log(ex.message);
+} catch (e) {
+  console.log(e);
 }
 const num2 = zkAppInstance.num.get();
 console.log('state after txn2:', num2.num.toString());

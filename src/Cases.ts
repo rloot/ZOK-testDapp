@@ -1,4 +1,4 @@
-import { Field, Struct, Experimental, verify } from 'snarkyjs';
+import { Field, Struct, Bool } from 'snarkyjs';
 export class SquareStruct extends Struct({
   num: Field,
 }) {
@@ -8,6 +8,21 @@ export class SquareStruct extends Struct({
   }
   public check() {
     this.num.assertGreaterThanOrEqual(1, 'num must be greater or equal than 1');
+  }
+}
+
+export class BoolStruct extends Struct({
+  boolean1: Bool,
+}) {
+  constructor(boolean1: Bool) {
+    super({ boolean1 });
+    this.check();
+  }
+  public check() {
+    //To be ignored type check is done in Snarky
+  }
+  _assert(expr: unknown, msg?: string) {
+    if (!expr) throw new Error(msg);
   }
 }
 
