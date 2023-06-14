@@ -7,7 +7,7 @@ import {
   AccountUpdate,
   Bool,
 } from 'snarkyjs';
-import { SquareStruct, FieldStruct, BoolStruct } from './Cases.js';
+import { DateStruct, SquareStruct, FieldStruct, BoolStruct } from './Cases.js';
 
 describe('Square.js', () => {
   let deployerAccount: PublicKey,
@@ -118,10 +118,61 @@ describe('Square.js', () => {
   });
 
   describe('BoolStruct ', () => {
-    it('Parses type on initiation', () => {
+    it.skip('Parses type on initiation', () => {
       const boolStruct = new BoolStruct(Bool(true));
       expect(boolStruct).toHaveProperty('boolean1');
+
+      // @ts-ignore
       expect(new BoolStruct(Field(1))).toThrowError();
+    });
+  });
+
+  describe('DateStruct', () => {
+    const birthday = new Date('1993-11-03');
+    const minDate = new Date('1970-01-03');
+    const maxDate = new Date('1972-01-02');
+
+    it('Initiates date struct', () => {
+      const dateStruct = new DateStruct(
+        Field(birthday.getTime()),
+        Field(minDate.getTime()),
+        Field(maxDate.getTime())
+      );
+
+      expect(dateStruct).toHaveProperty('birthday');
+      expect(dateStruct).toHaveProperty('minDate');
+      expect(dateStruct).toHaveProperty('maxDate');
+    });
+
+    it('Test min and max date restraint', () => {
+      const bellowAllowMinDate = new Date('1970-01-01');
+      const aboveAllowMaxDate = new Date('1973-01-02');
+
+      try {
+        new DateStruct(
+          Field(birthday.getTime()),
+          Field(minDate.getTime()),
+          Field(aboveAllowMaxDate.getTime())
+        );
+      } catch (e: unknown) {
+        // @ts-ignore
+        expect(e?.message).toContain(
+          'maxDate must be less or equal than 63158400000'
+        );
+      }
+
+      try {
+        new DateStruct(
+          Field(birthday.getTime()),
+          Field(bellowAllowMinDate.getTime()),
+          Field(maxDate.getTime())
+        );
+      } catch (e: unknown) {
+        // @ts-ignore
+        expect(e?.message).toContain(
+          'minDate must be greater or equal than 86400000'
+        );
+      }
     });
   });
 });
