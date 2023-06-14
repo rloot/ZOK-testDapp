@@ -17,6 +17,7 @@ module.exports = {
   },
   plugins: ['@typescript-eslint', 'snarkyjs'],
   rules: {
+    '@typescript-eslint/ban-ts-comment': 'off',
     'no-constant-condition': 'off',
     'prefer-const': 'off',
   },
