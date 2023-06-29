@@ -1,22 +1,13 @@
-import {
-  Field,
-  SmartContract,
-  state,
-  State,
-  method,
-  Poseidon,
-  Bool,
-  Struct,
-} from 'snarkyjs';
+import { Bool, Struct } from 'snarkyjs';
 export class BoolStruct extends Struct({
-  num: Field,
+  boolean1: Bool,
 }) {
-  constructor(num: Field) {
-    super({ num });
+  constructor(boolean1: Bool) {
+    super({ boolean1 });
     this.check();
   }
   public check() {
-    this.num.assertGreaterThanOrEqual(0, 'num must be greater or equal than 0');
+    //
   }
   _assert(expr: unknown, msg?: string) {
     if (!expr) throw new Error(msg);

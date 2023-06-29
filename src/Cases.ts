@@ -1,81 +1,37 @@
-import { Field, Struct, Bool } from 'snarkyjs';
-export class SquareStruct extends Struct({
-  num: Field,
-}) {
-  constructor(num: Field) {
-    super({ num });
-    this.check();
-  }
-  public check() {
-    this.num.assertGreaterThanOrEqual(1, 'num must be greater or equal than 1');
-  }
-}
+import { z } from 'zod';
 
-export class BoolStruct extends Struct({
-  boolean1: Bool,
-}) {
-  constructor(boolean1: Bool) {
-    super({ boolean1 });
-    this.check();
-  }
-  public check() {
-    //To be ignored type check is done in Snarky
-  }
-  _assert(expr: unknown, msg?: string) {
-    if (!expr) throw new Error(msg);
-  }
-}
+export const SquareStruct = z.object({
+  num: z.number().gte(1),
+});
 
-export class FieldStruct extends Struct({
-  a: Field,
-  b: Field,
-  c: Field,
-  d: Field,
-  e: Field,
-}) {
-  constructor(a: Field, b: Field, c: Field, d: Field, e: Field) {
-    super({ a, b, c, d, e });
-    this.check();
-  }
-  public check() {
-    this.a.assertGreaterThanOrEqual(0, 'e must be greater or equal than 0');
-    this.a.assertLessThanOrEqual(100, 'e must be less or equal than 100');
-    this.b.assertLessThan(100, 'f must be less than 100');
-    // exclusive minimum
-    this.c.assertGreaterThan(0, 'g must be greater than 0');
-    this.d.assertLessThanOrEqual(5, 'h must be less or equal than 5');
-    this.e.assertGreaterThanOrEqual(0, 'i must be greater or equal than 0');
-  }
-}
+export const VaccineStruct = z
+  .object({
+    // issuer id number
+    issuer: z.number().positive(),
+    // timestamp of expiration
+    expiration: z.number().positive(),
+  })
+  .describe('Vaccine schema');
 
-export class DateStruct extends Struct({
-  birthday: Field,
-  minDate: Field,
-  maxDate: Field,
-}) {
-  constructor(birthday: Field, minDate: Field, maxDate: Field) {
-    super({ birthday, minDate, maxDate });
-    this.check();
-  }
-  public check() {
-    this.minDate.assertGreaterThanOrEqual(
-      86400000,
-      'minDate must be greater or equal than 86400000'
-    );
-    this.minDate.assertGreaterThanOrEqual(
-      86400000,
-      'minDate must be greater or equal than 86400000'
-    );
-    this.maxDate.assertLessThanOrEqual(
-      63158400000,
-      'maxDate must be less or equal than 63158400000'
-    );
-    this.maxDate.assertLessThanOrEqual(
-      63158400000,
-      'maxDate must be less or equal than 63158400000'
-    );
-  }
-  _assert(expr: unknown, msg?: string) {
-    if (!expr) throw new Error(msg);
-  }
-}
+export const Square = z.object({
+  num: z.number().gte(0),
+});
+
+export const FieldStruct = z
+  .object({
+    f: z.number().lt(10),
+    g: z.number().gt(0),
+    h: z.number().lte(5),
+    i: z.number().gte(0),
+  })
+  .describe('Benchmark schema definitions');
+
+export const BoolStruct = z.object({
+  boolean1: z.boolean(),
+});
+
+export const DateStruct = z.object({
+  birthday: z.date(),
+  minDate: z.date().min(new Date('1970-01-02')),
+  maxDate: z.date().max(new Date('1972-01-02')),
+});
