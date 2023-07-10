@@ -8,10 +8,10 @@ import {
   Bool,
 } from 'snarkyjs';
 
-import { DateStruct } from './generated/DateStruct';
-import { SquareStruct } from './generated/SquareStruct';
-import { FieldStruct } from './generated/FieldStruct';
-import { BoolStruct } from './generated/BoolStruct';
+import { DateStruct } from './structs/DateStruct';
+import { SquareStruct } from './structs/SquareStruct';
+import { FieldStruct } from './structs/FieldStruct';
+import { BoolStruct } from './structs/BoolStruct';
 
 describe('Square.js', () => {
   let deployerAccount: PublicKey,
