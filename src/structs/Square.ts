@@ -1,14 +1,5 @@
-import {
-  Field,
-  SmartContract,
-  state,
-  State,
-  method,
-  Poseidon,
-  Bool,
-  Struct,
-} from 'snarkyjs';
-export class BoolStruct extends Struct({
+import { Field, Struct } from 'snarkyjs';
+export class Square extends Struct({
   num: Field,
 }) {
   constructor(num: Field) {
