@@ -4380,10 +4380,10 @@ yocto-queue@^0.1.0:
   resolved "https://registry.yarnpkg.com/yocto-queue/-/yocto-queue-0.1.0.tgz#0294eb3dee05028d31ee1a5fa2c556a6aaf10a1b"
   integrity sha512-rVksvsnNCdJ/ohGc6xgPwyN8eheCxsiLM8mxuE/t/mOVqJewPuO1miLpTHQiRgTKCLexL4MeAFVagts7HmNZ2Q==
 
-z0k@0.1.4:
-  version "0.1.4"
-  resolved "https://registry.yarnpkg.com/z0k/-/z0k-0.1.4.tgz#a2235f9ee3b2c2a8f53301ec79540eff6024a46a"
-  integrity sha512-5cZ1PVWVMXU+bW+ATXBll6Cem363h3VeWfTJxQWJmBlG2hR+6NmTayriX3Aoy82t8xOeS8z5N+Ez7201Dh0zfw==
+z0k@0.1.5:
+  version "0.1.5"
+  resolved "https://registry.yarnpkg.com/z0k/-/z0k-0.1.5.tgz#8c3cc4d6ef1b10078694e13c615b5b9359b5f1ab"
+  integrity sha512-hBsGluke2UPYftRmFEPXZf0/UMQQbMITAACoFLWpCupXVLZIIVPNqp/qNWRsz+ln9jP9LBHHsQsaxTGBXaqbww==
   dependencies:
     snarkyjs "^0.10.1"
     ts-node "^10.9.1"
