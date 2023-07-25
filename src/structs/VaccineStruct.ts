@@ -1,4 +1,13 @@
-import { Field, Struct } from 'snarkyjs';
+import {
+  Field,
+  SmartContract,
+  state,
+  State,
+  method,
+  Poseidon,
+  Bool,
+  Struct,
+} from 'snarkyjs';
 export class VaccineStruct extends Struct({
   issuer: Field,
   expiration: Field,

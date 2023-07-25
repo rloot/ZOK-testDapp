@@ -1,4 +1,13 @@
-import { Field, Struct } from 'snarkyjs';
+import {
+  Field,
+  SmartContract,
+  state,
+  State,
+  method,
+  Poseidon,
+  Bool,
+  Struct,
+} from 'snarkyjs';
 export class DateStruct extends Struct({
   birthday: Field,
   minDate: Field,

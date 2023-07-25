@@ -1,4 +1,13 @@
-import { Bool, Struct } from 'snarkyjs';
+import {
+  Field,
+  SmartContract,
+  state,
+  State,
+  method,
+  Poseidon,
+  Bool,
+  Struct,
+} from 'snarkyjs';
 export class BoolStruct extends Struct({
   boolean1: Bool,
 }) {
