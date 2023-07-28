@@ -1,4 +1,13 @@
-import { Field, Struct } from 'snarkyjs';
+import {
+  Field,
+  SmartContract,
+  state,
+  State,
+  method,
+  Poseidon,
+  Bool,
+  Struct,
+} from 'snarkyjs';
 export class VaccineStruct extends Struct({
   issuer: Field,
   expiration: Field,
@@ -8,6 +17,7 @@ export class VaccineStruct extends Struct({
     this.check();
   }
   public check() {
+    // Check
     // exclusive minimum
     this.issuer.assertGreaterThan(0, 'issuer must be greater than 0');
     // exclusive minimum

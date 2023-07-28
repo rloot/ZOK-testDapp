@@ -1,20 +1,44 @@
-import { Field, Struct } from 'snarkyjs';
+import {
+  Field,
+  SmartContract,
+  state,
+  State,
+  method,
+  Poseidon,
+  Bool,
+  Struct,
+} from 'snarkyjs';
 export class FieldStruct extends Struct({
-  f: Field,
-  g: Field,
-  h: Field,
-  i: Field,
+  lt: Field,
+  gt: Field,
+  lte: Field,
+  gte: Field,
+  max: Field,
+  min: Field,
 }) {
-  constructor(f: Field, g: Field, h: Field, i: Field) {
-    super({ f, g, h, i });
+  constructor(
+    lt: Field,
+    gt: Field,
+    lte: Field,
+    gte: Field,
+    max: Field,
+    min: Field
+  ) {
+    super({ lt, gt, lte, gte, max, min });
     this.check();
   }
   public check() {
-    this.f.assertLessThan(10, 'f must be less than 10');
+    // Check
+    this.lt.assertLessThan(10, 'lt must be less than 10');
     // exclusive minimum
-    this.g.assertGreaterThan(0, 'g must be greater than 0');
-    this.h.assertLessThanOrEqual(5, 'h must be less or equal than 5');
-    this.i.assertGreaterThanOrEqual(0, 'i must be greater or equal than 0');
+    this.gt.assertGreaterThan(0, 'gt must be greater than 0');
+    this.lte.assertLessThanOrEqual(5, 'lte must be less or equal than 5');
+    this.gte.assertGreaterThanOrEqual(0, 'gte must be greater or equal than 0');
+    this.max.assertLessThanOrEqual(100, 'max must be less or equal than 100');
+    this.min.assertGreaterThanOrEqual(
+      40,
+      'min must be greater or equal than 40'
+    );
   }
   _assert(expr: unknown, msg?: string) {
     if (!expr) throw new Error(msg);

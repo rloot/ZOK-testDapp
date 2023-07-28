@@ -19,10 +19,12 @@ export const Square = z.object({
 
 export const FieldStruct = z
   .object({
-    f: z.number().lt(10),
-    g: z.number().gt(0),
-    h: z.number().lte(5),
-    i: z.number().gte(0),
+    lt: z.number().lt(10),
+    gt: z.number().gt(0),
+    lte: z.number().lte(5),
+    gte: z.number().gte(0),
+    max: z.number().max(100),
+    min: z.number().min(40),
   })
   .describe('Benchmark schema definitions');
 

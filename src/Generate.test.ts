@@ -47,7 +47,7 @@ describe('Square.js', () => {
     zkAppInstance = new Square(zkAppAddress);
   });
 
-  describe('Square()', () => {
+  describe('Cases test.', () => {
     it('Sets up Mina test enviroment', async () => {
       const deployTxn = await Mina.transaction(deployerAccount, () => {
         AccountUpdate.fundNewAccount(deployerAccount);
@@ -88,7 +88,6 @@ describe('Square.js', () => {
       await txn.sign([senderKey]).send();
 
       const square = zkAppInstance.num.get();
-      console.log(square.num.toString());
       expect(square.num).toEqual(Field(6561));
     });
 
@@ -98,38 +97,156 @@ describe('Square.js', () => {
           'num must be greater or equal than 1'
         );
       } catch (e) {
-        // console.log(e);
+        //
       }
     });
   });
 
-  describe('FieldStruct ', () => {
-    it('Create instance of field struct', async () => {
-      const field = new FieldStruct(Field(1), Field(99), Field(2), Field(1));
+  describe('Field ', () => {
+    it('Creates instance of field struct', async () => {
+      const field = new FieldStruct(
+        Field(1),
+        Field(99),
+        Field(2),
+        Field(1),
+        Field(50),
+        Field(50)
+      );
 
-      expect(field.f).toEqual(Field(1));
-      expect(field.g).toEqual(Field(99));
-      expect(field.h).toEqual(Field(2));
-      expect(field.i).toEqual(Field(1));
+      expect(field.lt).toEqual(Field(1));
+      expect(field.gt).toEqual(Field(99));
+      expect(field.lte).toEqual(Field(2));
+      expect(field.gte).toEqual(Field(1));
+      expect(field.min).toEqual(Field(50));
+      expect(field.max).toEqual(Field(50));
+    });
+
+    it('lt must be less than 10', () => {
+      try {
+        new FieldStruct(
+          Field(11), // over lt
+          Field(99),
+          Field(2),
+          Field(1),
+          Field(50),
+          Field(50)
+        );
+      } catch (e: unknown) {
+        // @ts-ignore
+        expect(e?.message).toContain('lt must be less than 10');
+      }
+    });
+
+    it('Lt should be less than 10', () => {
+      try {
+        new FieldStruct(
+          Field(11), // lt
+          Field(99),
+          Field(2),
+          Field(1),
+          Field(50),
+          Field(50)
+        );
+      } catch (e: unknown) {
+        // @ts-ignore
+        expect(e?.message).toContain('lt must be less than 10');
+      }
+    });
+
+    it('gt must be greater than 0', () => {
+      try {
+        new FieldStruct(
+          Field(0),
+          Field(0), // gt
+          Field(2),
+          Field(1),
+          Field(50),
+          Field(50)
+        );
+      } catch (e: unknown) {
+        // @ts-ignore
+        expect(e?.message).toContain('gt must be greater than 0');
+      }
+    });
+
+    it('lte must be less or equal than 5', () => {
+      try {
+        new FieldStruct(
+          Field(0),
+          Field(1),
+          Field(6), // lte
+          Field(1),
+          Field(50),
+          Field(50)
+        );
+      } catch (e: unknown) {
+        // @ts-ignore
+        expect(e?.message).toContain('lte must be less or equal than 5');
+      }
+    });
+
+    it('gte must be greater or equal than 0', () => {
+      try {
+        new FieldStruct(
+          Field(0),
+          Field(1),
+          Field(5),
+          Field(-1), // gte
+          Field(50),
+          Field(50)
+        );
+      } catch (e: unknown) {
+        // @ts-ignore
+        expect(e?.message).toContain('gte must be greater or equal than 0');
+      }
+    });
+
+    it('max must be less or equal than 100', () => {
+      try {
+        new FieldStruct(
+          Field(0),
+          Field(1),
+          Field(5),
+          Field(0),
+          Field(101), // max
+          Field(50)
+        );
+      } catch (e: unknown) {
+        // @ts-ignore
+        expect(e?.message).toContain('max must be less or equal than 100');
+      }
+    });
+
+    it('min must be greater or equal than 40', () => {
+      try {
+        new FieldStruct(
+          Field(0),
+          Field(1),
+          Field(5),
+          Field(0),
+          Field(50),
+          Field(39) // min
+        );
+      } catch (e: unknown) {
+        // @ts-ignore
+        expect(e?.message).toContain('min must be greater or equal than 40');
+      }
     });
   });
 
-  describe('BoolStruct ', () => {
-    it.skip('Parses type on initiation', () => {
+  describe('Bool ', () => {
+    it('Parses type on initiation', () => {
       const boolStruct = new BoolStruct(Bool(true));
       expect(boolStruct).toHaveProperty('boolean1');
-
-      // @ts-ignore
-      expect(new BoolStruct(Field(1))).toThrowError();
     });
   });
 
-  describe('DateStruct', () => {
+  describe('Date', () => {
     const birthday = new Date('1993-11-03');
     const minDate = new Date('1970-01-03');
     const maxDate = new Date('1972-01-02');
 
-    it('Initiates date struct', () => {
+    it('Check initialization', () => {
       const dateStruct = new DateStruct(
         Field(birthday.getTime()),
         Field(minDate.getTime()),

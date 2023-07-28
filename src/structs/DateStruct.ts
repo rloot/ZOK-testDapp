@@ -1,4 +1,13 @@
-import { Field, Struct } from 'snarkyjs';
+import {
+  Field,
+  SmartContract,
+  state,
+  State,
+  method,
+  Poseidon,
+  Bool,
+  Struct,
+} from 'snarkyjs';
 export class DateStruct extends Struct({
   birthday: Field,
   minDate: Field,
@@ -9,6 +18,7 @@ export class DateStruct extends Struct({
     this.check();
   }
   public check() {
+    // Check
     this.minDate.assertGreaterThanOrEqual(
       86400000,
       'minDate must be greater or equal than 86400000'

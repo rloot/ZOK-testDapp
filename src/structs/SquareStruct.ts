@@ -1,4 +1,13 @@
-import { Field, Struct } from 'snarkyjs';
+import {
+  Field,
+  SmartContract,
+  state,
+  State,
+  method,
+  Poseidon,
+  Bool,
+  Struct,
+} from 'snarkyjs';
 export class SquareStruct extends Struct({
   num: Field,
 }) {
@@ -7,6 +16,7 @@ export class SquareStruct extends Struct({
     this.check();
   }
   public check() {
+    // Check
     this.num.assertGreaterThanOrEqual(1, 'num must be greater or equal than 1');
   }
   _assert(expr: unknown, msg?: string) {
