@@ -1,3 +1,3 @@
-import { Square } from './Square.js';
+import { Square } from './SquareContract.js';
 
 export { Square };

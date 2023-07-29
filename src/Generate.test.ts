@@ -1,4 +1,4 @@
-import { Square } from './Square.js';
+import { Square } from './SquareContract.js';
 import {
   Field,
   Mina,
@@ -124,23 +124,7 @@ describe('Square.js', () => {
     it('lt must be less than 10', () => {
       try {
         new FieldStruct(
-          Field(11), // over lt
-          Field(99),
-          Field(2),
-          Field(1),
-          Field(50),
-          Field(50)
-        );
-      } catch (e: unknown) {
-        // @ts-ignore
-        expect(e?.message).toContain('lt must be less than 10');
-      }
-    });
-
-    it('Lt should be less than 10', () => {
-      try {
-        new FieldStruct(
-          Field(11), // lt
+          Field(11),
           Field(99),
           Field(2),
           Field(1),
