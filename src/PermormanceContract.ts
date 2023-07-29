@@ -65,7 +65,7 @@ export class SimpleContract extends SmartContract {
     this.fields.set(fieldsInstance);
   }
 
-  @method updateFields(newFields: FieldStruct) {
+  @method updateFields(newFields: FieldStructNoCheck) {
     const currentState = this.fields.get();
     this.fields.assertEquals(currentState);
 

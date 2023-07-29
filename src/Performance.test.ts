@@ -1,12 +1,20 @@
-import { ZOKContract } from './PermormanceContract';
+import { FieldStruct } from './structs/FieldStruct';
+import {
+  ZOKContract,
+  SimpleContract,
+  FieldStructNoCheck,
+} from './PermormanceContract';
 import { Field, Mina, PrivateKey, PublicKey, AccountUpdate } from 'snarkyjs';
 
 describe('Square.js', () => {
   let deployerAccount: PublicKey,
     senderAccount: PublicKey,
-    zkAppInstance: ZOKContract,
-    zkAppPrivateKey: PrivateKey,
-    zkAppAddress,
+    zokContractInstance: ZOKContract,
+    simpleContractInstance: SimpleContract,
+    zokContractPrivateKey: PrivateKey,
+    zokContractAppAddress,
+    simpleContractPrivateKey: PrivateKey,
+    simpleContractAppAddress,
     deployerKey: PrivateKey,
     senderKey: PrivateKey;
 
@@ -18,7 +26,7 @@ describe('Square.js', () => {
     const { privateKey: deployerPKey, publicKey: deployerAccountKey } =
       Local.testAccounts[0];
     const { privateKey: senderPKey, publicKey: senderAccountKey } =
-      Local.testAccounts[1];
+      Local.testAccounts[2];
 
     deployerAccount = deployerAccountKey;
     senderAccount = senderAccountKey;
@@ -27,32 +35,73 @@ describe('Square.js', () => {
 
     // ----------------------------------------------------
 
-    zkAppPrivateKey = PrivateKey.random();
-    zkAppAddress = zkAppPrivateKey.toPublicKey();
+    zokContractPrivateKey = PrivateKey.random();
+    zokContractAppAddress = zokContractPrivateKey.toPublicKey();
 
-    zkAppInstance = new ZOKContract(zkAppAddress);
+    simpleContractPrivateKey = PrivateKey.random();
+    simpleContractAppAddress = simpleContractPrivateKey.toPublicKey();
+
+    zokContractInstance = new ZOKContract(zokContractAppAddress);
+    simpleContractInstance = new SimpleContract(simpleContractAppAddress);
   });
 
   describe('Cases test.', () => {
-    it('Sets up Mina test enviroment', async () => {
+    it('ZOKContract', async () => {
       const deployTxn = await Mina.transaction(deployerAccount, () => {
         AccountUpdate.fundNewAccount(deployerAccount);
-        zkAppInstance.deploy();
+        zokContractInstance.deploy();
       });
-      await deployTxn.sign([deployerKey, zkAppPrivateKey]).send();
+      await deployTxn.sign([deployerKey, zokContractPrivateKey]).send();
 
       // get the initial state of Square after deployment
-      // const num0 = zkAppInstance.num.get();
-      // expect(num0.num).toEqual(Field(3));
+      const fields = zokContractInstance.fields.get();
+      expect(fields.max).toEqual(Field(50));
 
-      // const txn1 = await Mina.transaction(senderAccount, () => {
-      //   zkAppInstance.updateNum(Field(9));
-      // });
-      // await txn1.prove();
-      // await txn1.sign([senderKey]).send();
+      const newFieldsInstance = new FieldStruct(
+        Field(6),
+        Field(20),
+        Field(1),
+        Field(2),
+        Field(40),
+        Field(60)
+      );
+      const txn1 = await Mina.transaction(senderAccount, () => {
+        zokContractInstance.updateFields(newFieldsInstance);
+      });
+      await txn1.prove();
+      await txn1.sign([senderKey]).send();
 
-      // const num1 = zkAppInstance.num.get();
-      // expect(num1.num).toEqual(Field(9));
+      const num1 = zokContractInstance.fields.get();
+      expect(num1.lt).toEqual(Field(6));
+    });
+
+    it('SimpleContract', async () => {
+      const deployTxn = await Mina.transaction(deployerAccount, () => {
+        AccountUpdate.fundNewAccount(deployerAccount);
+        simpleContractInstance.deploy();
+      });
+      await deployTxn.sign([deployerKey, simpleContractPrivateKey]).send();
+
+      // get the initial state of Square after deployment
+      const fields = simpleContractInstance.fields.get();
+      expect(fields.max).toEqual(Field(50));
+
+      const newFieldsInstance = new FieldStructNoCheck(
+        Field(6),
+        Field(20),
+        Field(1),
+        Field(2),
+        Field(40),
+        Field(60)
+      );
+      const txn1 = await Mina.transaction(senderAccount, () => {
+        simpleContractInstance.updateFields(newFieldsInstance);
+      });
+      await txn1.prove();
+      await txn1.sign([senderKey]).send();
+
+      const num1 = simpleContractInstance.fields.get();
+      expect(num1.lt).toEqual(Field(6));
     });
   });
 });
