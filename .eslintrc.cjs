@@ -20,5 +20,6 @@ module.exports = {
     '@typescript-eslint/ban-ts-comment': 'off',
     'no-constant-condition': 'off',
     'prefer-const': 'off',
+    'max-len': ['error', { code: 120 }],
   },
 };
