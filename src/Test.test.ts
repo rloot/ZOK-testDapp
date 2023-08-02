@@ -151,7 +151,7 @@ describe('Test.js', () => {
       console.log(toHex(pep._field0));
       // const expectedField = (a2 * (2 ** 16)) + issuer
       // expect(pep.a2).toEqual(Field.from(expiration));
-      console.log(pep._field0.toString());
+      // console.log(pep._field0.toString());
       // expect(pep._field0.toString()).toEqual(expectedField.toString())
     });
     it.skip('can set account', async () => {
